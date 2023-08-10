@@ -58,13 +58,13 @@ public class TagTooltips {
 			for (int i = tooltip.size() - 1; i > 0; i--) {
 				tooltip.remove(i);
 			}
-			TagKeyComparator c = new TagKeyComparator();
-			List<TagKey<Item>> itemTags = new LinkedList<TagKey<Item>>(event.getItemStack().getTags().toList());
+			Comparator<TagKey<?>> c = (o1, o2) -> o1.location().toString().compareTo(o2.location().toString());
+			List<TagKey<Item>> itemTags = new LinkedList<>(event.getItemStack().getTags().toList());
 			Collections.sort(itemTags, c);
-			List<TagKey<Block>> blockTags = new LinkedList<TagKey<Block>>();
+			List<TagKey<Block>> blockTags = new LinkedList<>();
 			if (event.getItemStack().getItem() instanceof BlockItem) {
 				BlockItem blockItem = (BlockItem) event.getItemStack().getItem();
-				blockTags = new LinkedList<TagKey<Block>>(blockItem.getBlock().defaultBlockState().getTags().toList());
+				blockTags = new LinkedList<>(blockItem.getBlock().defaultBlockState().getTags().toList());
 				Collections.sort(blockTags, c);
 			}
 			if (blockTags.size() + itemTags.size() < 1) {
@@ -86,13 +86,6 @@ public class TagTooltips {
 		}
 	}
 
-	private class TagKeyComparator implements Comparator<TagKey<?>> {
-		@Override
-		public int compare(TagKey<?> o1, TagKey<?> o2) {
-			return o1.location().toString().compareTo(o2.location().toString());
-		}
-	}
-
 	@Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class ClientModBusEvents {
 		@SubscribeEvent
@@ -104,7 +97,7 @@ public class TagTooltips {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public void onKeyInput(InputEvent.Key event) {
-		if(SHOW_TAG_TOOLTIP_KEY.isActiveAndMatches(InputConstants.getKey(event.getKey(), 0))) {
+		if (SHOW_TAG_TOOLTIP_KEY.isActiveAndMatches(InputConstants.getKey(event.getKey(), 0))) {
 			SHOW_TAG_TOOLTIP_KEY.setDown(!(event.getAction() == InputConstants.RELEASE));
 		}
 	}
