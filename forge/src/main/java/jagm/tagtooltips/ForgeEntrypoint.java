@@ -6,12 +6,11 @@ import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(TagTooltips.MOD_ID)
 public class ForgeEntrypoint {
 
-    public ForgeEntrypoint(FMLJavaModLoadingContext context){}
+    public ForgeEntrypoint(){}
 
     @Mod.EventBusSubscriber(modid = TagTooltips.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModEventHandler{

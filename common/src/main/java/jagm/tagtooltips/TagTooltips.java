@@ -46,8 +46,8 @@ public class TagTooltips {
 
         if(TagTooltips.SHOW_TAG_TOOLTIP_KEY.isDown()){
 
-            while (tooltip.size() > 1) {
-                tooltip.removeLast();
+            for(int i = tooltip.size() - 1; i > 0; i--) {
+                tooltip.remove(i);
             }
 
             Comparator<TagKey<?>> c = Comparator.comparing(tag -> tag.location().toString());

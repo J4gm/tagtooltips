@@ -25,7 +25,7 @@ public class FabricEntrypoint implements ClientModInitializer {
             }));
         });
 
-        ItemTooltipCallback.EVENT.register((stack, context, tooltipFlag, tooltip) -> {
+        ItemTooltipCallback.EVENT.register((stack, tooltipFlag, tooltip) -> {
             if(TagTooltips.SHOW_TAG_TOOLTIP_KEY.isDown()){
                 TagTooltips.onMakeTooltip(tooltip, stack, true);
             }
