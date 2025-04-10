@@ -13,8 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import org.lwjgl.glfw.GLFW;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,12 +21,10 @@ import java.util.List;
 public class TagTooltips {
 
     public static final String MOD_ID = "tagtooltips";
-    public static final String MOD_NAME = "Tag Tooltips";
-
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
     public static final KeyMapping SHOW_TAG_TOOLTIP_KEY = new KeyMapping("key." + MOD_ID + ".show_tag_tooltip", GLFW.GLFW_KEY_SEMICOLON, "key.categories.misc");
-    public static final Style TITLES = Style.EMPTY.withColor(0xFFFFA0).withBold(true);
-    public static final Style GREYED = Style.EMPTY.withColor(0xA0A0A0);
+
+    private static final Style TITLES = Style.EMPTY.withColor(0xFFFFA0).withBold(true);
+    private static final Style GREYED = Style.EMPTY.withColor(0xA0A0A0);
 
     public static void onKey(int key, boolean down){
         if(InputConstants.getKey(key, 0) != InputConstants.UNKNOWN && SHOW_TAG_TOOLTIP_KEY.matches(key, 0)) {
@@ -37,8 +33,8 @@ public class TagTooltips {
     }
 
     @SuppressWarnings("unchecked")
-    private static void addLine(List<?> tooltip, Component line, boolean fabric){
-        if(fabric){
+    private static void addLine(List<?> tooltip, Component line, boolean isFabric){
+        if(isFabric){
             ((List<Component>) tooltip).add(line);
         }
         else{
@@ -46,7 +42,7 @@ public class TagTooltips {
         }
     }
 
-    public static void onMakeTooltip(List<?> tooltip, ItemStack stack, boolean fabric){
+    public static void onMakeTooltip(List<?> tooltip, ItemStack stack, boolean isFabric){
 
         if(TagTooltips.SHOW_TAG_TOOLTIP_KEY.isDown()){
 
@@ -64,19 +60,19 @@ public class TagTooltips {
             }
 
             if (itemTags.isEmpty() && blockTags.isEmpty()){
-                addLine(tooltip, Component.translatable("tooltip.tagtooltips.no_tags").setStyle(TagTooltips.GREYED), fabric);
+                addLine(tooltip, Component.translatable("tooltip." + MOD_ID + ".no_tags").setStyle(TagTooltips.GREYED), isFabric);
             }
             else {
                 if(!itemTags.isEmpty()){
-                    addLine(tooltip, Component.translatable("tooltip.tagtooltips.item_tags").setStyle(TagTooltips.TITLES), fabric);
+                    addLine(tooltip, Component.translatable("tooltip." + MOD_ID + ".item_tags").setStyle(TagTooltips.TITLES), isFabric);
                     for (TagKey<Item> itemTag : itemTags) {
-                        addLine(tooltip, Component.literal("#" + itemTag.location().toString()), fabric);
+                        addLine(tooltip, Component.literal("#" + itemTag.location()), isFabric);
                     }
                 }
                 if(!blockTags.isEmpty()){
-                    addLine(tooltip, Component.translatable("tooltip.tagtooltips.block_tags").setStyle(TagTooltips.TITLES), fabric);
+                    addLine(tooltip, Component.translatable("tooltip." + MOD_ID + ".block_tags").setStyle(TagTooltips.TITLES), isFabric);
                     for (TagKey<Block> blockTag : blockTags) {
-                        addLine(tooltip, Component.literal("#" + blockTag.location().toString()), fabric);
+                        addLine(tooltip, Component.literal("#" + blockTag.location()), isFabric);
                     }
                 }
             }
