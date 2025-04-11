@@ -2,5 +2,9 @@
   "key.tagtooltips.show_tag_tooltip": "Show Item Tag Tooltips",
   "tooltip.tagtooltips.no_tags": "No tags",
   "tooltip.tagtooltips.item_tags": "Item tags:",
-  "tooltip.tagtooltips.block_tags": "Block tags:"
+  "tooltip.tagtooltips.block_tags": "Block tags:",
+  "tooltip.tagtooltips.entity_type_tags": "Entity type tags:",
+  "tooltip.tagtooltips.enchantment_tags": "Enchantment tags:",
+  "tooltip.tagtooltips.multiple_enchantments": "Multiple enchantments",
+  "tooltip.tagtooltips.poi_type_tags": "Point of interest tags:"
 }
