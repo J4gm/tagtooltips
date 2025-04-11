@@ -6,5 +6,7 @@
   "tooltip.tagtooltips.entity_type_tags": "Entity type tags:",
   "tooltip.tagtooltips.enchantment_tags": "Enchantment tags:",
   "tooltip.tagtooltips.multiple_enchantments": "Multiple enchantments",
-  "tooltip.tagtooltips.poi_type_tags": "Point of interest tags:"
+  "tooltip.tagtooltips.poi_type_tags": "Point of interest tags:",
+  "tooltip.tagtooltips.fluid_tags": "Fluid tags:",
+  "tooltip.tagtooltips.instrument_tags": "Instrument tags:"
 }

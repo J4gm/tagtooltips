@@ -1,12 +1,21 @@
 package jagm.tagtooltips;
 
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod(TagTooltips.MOD_ID)
 public class ForgeEntrypoint {
@@ -38,7 +47,22 @@ public class ForgeEntrypoint {
 
         @SubscribeEvent
         public static void onMakeTooltip(RenderTooltipEvent.GatherComponents event){
-            TagTooltips.onMakeTooltip(event.getTooltipElements(), event.getItemStack(), false);
+            List<TagKey<Fluid>> fluidTags = new ArrayList<>();
+            if(event.getItemStack().getItem() instanceof BucketItem bucket){
+                fluidTags = TagTooltips.getFluidTags(bucket.getFluid());
+            }
+            else if(event.getItemStack().getItem() instanceof IFluidTank fluidTank){
+                fluidTags = TagTooltips.getFluidTags(fluidTank.getFluid().getFluid());
+            }
+            else if(event.getItemStack().getItem() instanceof BlockItem blockItem){
+                if(blockItem instanceof IFluidTank fluidTank){
+                    fluidTags = TagTooltips.getFluidTags(fluidTank.getFluid().getFluid());
+                }
+                if(blockItem instanceof IFluidBlock fluidBlock){
+                    fluidTags = TagTooltips.getFluidTags(fluidBlock.getFluid());
+                }
+            }
+            TagTooltips.onMakeTooltip(event.getTooltipElements(), event.getItemStack(), fluidTags, false);
         }
 
     }

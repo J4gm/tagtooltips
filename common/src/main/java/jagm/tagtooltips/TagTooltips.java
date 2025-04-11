@@ -17,9 +17,13 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 public class TagTooltips {
 
@@ -34,6 +38,10 @@ public class TagTooltips {
         if(InputConstants.getKey(key, 0) != InputConstants.UNKNOWN && SHOW_TAG_TOOLTIP_KEY.matches(key, 0)) {
             SHOW_TAG_TOOLTIP_KEY.setDown(down);
         }
+    }
+
+    public static List<TagKey<Fluid>> getFluidTags(Fluid fluid){
+        return fluid.defaultFluidState().getTags().toList();
     }
 
     @SuppressWarnings("unchecked")
@@ -55,7 +63,7 @@ public class TagTooltips {
         }
     }
 
-    public static void onMakeTooltip(List<?> tooltip, ItemStack stack, boolean isFabric){
+    public static void onMakeTooltip(List<?> tooltip, ItemStack stack, List<TagKey<Fluid>> fluidTags, boolean isFabric){
 
         if(TagTooltips.SHOW_TAG_TOOLTIP_KEY.isDown()){
 
@@ -86,9 +94,9 @@ public class TagTooltips {
             }
 
             List<TagKey<Enchantment>> enchantmentTags = new ArrayList<>();
-            Set<Holder<Enchantment>> stackEnchantments = EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet();
+            List<Holder<Enchantment>> stackEnchantments = EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet().stream().toList();
             if(stackEnchantments.size() == 1){
-                enchantmentTags.addAll(stackEnchantments.stream().toList().getFirst().tags().toList());
+                enchantmentTags.addAll(stackEnchantments.getFirst().tags().toList());
                 enchantmentTags.sort(TAG_COMPARATOR);
             }
 
@@ -96,6 +104,7 @@ public class TagTooltips {
                 addLine(tooltip, Component.translatable("tooltip." + MOD_ID + ".no_tags").setStyle(GREYED), isFabric);
             }
             else {
+                addTags(tooltip, fluidTags, "fluid_tags", isFabric);
                 addTags(tooltip, poiTags, "poi_type_tags", isFabric);
                 addTags(tooltip, blockTags, "block_tags", isFabric);
                 addTags(tooltip, entityTags, "entity_type_tags", isFabric);

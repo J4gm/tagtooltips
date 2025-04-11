@@ -1,5 +1,9 @@
 package jagm.tagtooltips;
 
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -8,6 +12,10 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.fluids.IFluidTank;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod(TagTooltips.MOD_ID)
 public class NeoForgeEntrypoint {
@@ -39,7 +47,19 @@ public class NeoForgeEntrypoint {
 
         @SubscribeEvent
         public static void onMakeTooltip(RenderTooltipEvent.GatherComponents event){
-            TagTooltips.onMakeTooltip(event.getTooltipElements(), event.getItemStack(), false);
+            List<TagKey<Fluid>> fluidTags = new ArrayList<>();
+            if(event.getItemStack().getItem() instanceof BucketItem bucket){
+                fluidTags = TagTooltips.getFluidTags(bucket.content);
+            }
+            else if(event.getItemStack().getItem() instanceof IFluidTank fluidTank){
+                fluidTags = TagTooltips.getFluidTags(fluidTank.getFluid().getFluid());
+            }
+            else if(event.getItemStack().getItem() instanceof BlockItem blockItem){
+                if(blockItem instanceof IFluidTank fluidTank){
+                    fluidTags = TagTooltips.getFluidTags(fluidTank.getFluid().getFluid());
+                }
+            }
+            TagTooltips.onMakeTooltip(event.getTooltipElements(), event.getItemStack(), fluidTags, false);
         }
 
     }
