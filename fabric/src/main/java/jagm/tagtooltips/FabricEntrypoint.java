@@ -7,12 +7,6 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.level.material.Fluid;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class FabricEntrypoint implements ClientModInitializer {
@@ -32,11 +26,7 @@ public class FabricEntrypoint implements ClientModInitializer {
         });
 
         ItemTooltipCallback.EVENT.register((stack, context, tooltipFlag, tooltip) -> {
-            List<TagKey<Fluid>> fluidTags = new ArrayList<>();
-            if(stack.getItem() instanceof BucketItem bucket){
-                fluidTags = TagTooltips.getFluidTags(bucket.content);
-            }
-            TagTooltips.onMakeTooltip(tooltip, stack, fluidTags, true);
+            TagTooltips.onMakeTooltip(tooltip, stack, bucket -> bucket.content, true);
         });
 
     }

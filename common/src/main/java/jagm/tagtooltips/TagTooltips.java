@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class TagTooltips {
 
@@ -38,10 +39,6 @@ public class TagTooltips {
         if(InputConstants.getKey(key, 0) != InputConstants.UNKNOWN && SHOW_TAG_TOOLTIP_KEY.matches(key, 0)) {
             SHOW_TAG_TOOLTIP_KEY.setDown(down);
         }
-    }
-
-    public static List<TagKey<Fluid>> getFluidTags(Fluid fluid){
-        return fluid.defaultFluidState().getTags().toList();
     }
 
     @SuppressWarnings("unchecked")
@@ -63,7 +60,7 @@ public class TagTooltips {
         }
     }
 
-    public static void onMakeTooltip(List<?> tooltip, ItemStack stack, List<TagKey<Fluid>> fluidTags, boolean isFabric){
+    public static void onMakeTooltip(List<?> tooltip, ItemStack stack, Function<BucketItem, Fluid> fluidFromBucket, boolean isFabric){
 
         if(TagTooltips.SHOW_TAG_TOOLTIP_KEY.isDown()){
 
@@ -85,6 +82,12 @@ public class TagTooltips {
                     poiTags.addAll(poiTypeHolder.get().tags().toList());
                     poiTags.sort(TAG_COMPARATOR);
                 }
+            }
+
+            List<TagKey<Fluid>> fluidTags = new ArrayList<>();
+            if(stack.getItem() instanceof BucketItem bucket){
+                fluidTags.addAll(fluidFromBucket.apply(bucket).defaultFluidState().getTags().toList());
+                fluidTags.sort(TAG_COMPARATOR);
             }
 
             List<TagKey<EntityType<?>>> entityTags = new ArrayList<>();
