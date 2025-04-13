@@ -3,6 +3,7 @@ package jagm.tagtooltips;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -15,6 +16,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -93,8 +95,11 @@ public class TagTooltips {
 
             List<TagKey<EntityType<?>>> entityTags = new ArrayList<>();
             if(stack.getItem() instanceof SpawnEggItem spawnEgg){
-                entityTags.addAll(tagsFromEntityType.apply(spawnEgg.getType(stack)).toList());
-                entityTags.sort(TAG_COMPARATOR);
+                Level level = Minecraft.getInstance().level;
+                if(level != null){
+                    entityTags.addAll(tagsFromEntityType.apply(spawnEgg.getType(level.registryAccess(), stack)).toList());
+                    entityTags.sort(TAG_COMPARATOR);
+                }
             }
 
             List<TagKey<Enchantment>> enchantmentTags = new ArrayList<>();
