@@ -1,5 +1,6 @@
 package jagm.tagtooltips;
 
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BucketItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -39,7 +40,7 @@ public class ForgeEntrypoint {
 
         @SubscribeEvent
         public static void onMakeTooltip(RenderTooltipEvent.GatherComponents event){
-            TagTooltips.onMakeTooltip(event.getTooltipElements(), event.getItemStack(), BucketItem::getFluid, false);
+            TagTooltips.onMakeTooltip(event.getTooltipElements(), event.getItemStack(), BucketItem::getFluid, EntityType::getTags, false);
         }
 
     }

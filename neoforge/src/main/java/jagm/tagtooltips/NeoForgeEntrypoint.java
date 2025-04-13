@@ -1,5 +1,6 @@
 package jagm.tagtooltips;
 
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -39,7 +40,7 @@ public class NeoForgeEntrypoint {
 
         @SubscribeEvent
         public static void onMakeTooltip(RenderTooltipEvent.GatherComponents event){
-            TagTooltips.onMakeTooltip(event.getTooltipElements(), event.getItemStack(), bucket -> bucket.content, false);
+            TagTooltips.onMakeTooltip(event.getTooltipElements(), event.getItemStack(), bucket -> bucket.content, EntityType::getTags, false);
         }
 
     }

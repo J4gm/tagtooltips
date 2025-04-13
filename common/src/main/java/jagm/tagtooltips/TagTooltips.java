@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class TagTooltips {
 
@@ -60,7 +61,7 @@ public class TagTooltips {
         }
     }
 
-    public static void onMakeTooltip(List<?> tooltip, ItemStack stack, Function<BucketItem, Fluid> fluidFromBucket, boolean isFabric){
+    public static void onMakeTooltip(List<?> tooltip, ItemStack stack, Function<BucketItem, Fluid> fluidFromBucket, Function<EntityType<?>, Stream<TagKey<EntityType<?>>>> tagsFromEntityType, boolean isFabric){
 
         if(TagTooltips.SHOW_TAG_TOOLTIP_KEY.isDown()){
 
@@ -92,7 +93,7 @@ public class TagTooltips {
 
             List<TagKey<EntityType<?>>> entityTags = new ArrayList<>();
             if(stack.getItem() instanceof SpawnEggItem spawnEgg){
-                entityTags.addAll(spawnEgg.getType(stack).builtInRegistryHolder().tags().toList());
+                entityTags.addAll(tagsFromEntityType.apply(spawnEgg.getType(stack)).toList());
                 entityTags.sort(TAG_COMPARATOR);
             }
 
