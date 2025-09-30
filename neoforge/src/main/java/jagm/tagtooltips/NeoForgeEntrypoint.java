@@ -1,22 +1,32 @@
 package jagm.tagtooltips;
 
+import com.mojang.datafixers.util.Either;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+
+import java.util.List;
 
 @Mod(TagTooltips.MOD_ID)
 public class NeoForgeEntrypoint {
 
-    public NeoForgeEntrypoint(IEventBus eventBus){}
+    public NeoForgeEntrypoint(IEventBus eventBus) {}
 
-    @EventBusSubscriber(modid = TagTooltips.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
-    public static class ClientModEventHandler{
+    @EventBusSubscriber(modid = TagTooltips.MOD_ID, value = Dist.CLIENT)
+    public static class ClientModEventHandler {
 
         @SubscribeEvent
         public static void onKeyRegister(RegisterKeyMappingsEvent event){
@@ -25,8 +35,8 @@ public class NeoForgeEntrypoint {
 
     }
 
-    @EventBusSubscriber(modid = TagTooltips.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
-    public static class ClientGameEventHandler{
+    @EventBusSubscriber(modid = TagTooltips.MOD_ID, value = Dist.CLIENT)
+    public static class ClientGameEventHandler {
 
         @SubscribeEvent
         public static void onKeyPressed(ScreenEvent.KeyPressed.Pre event){
@@ -39,8 +49,24 @@ public class NeoForgeEntrypoint {
         }
 
         @SubscribeEvent
-        public static void onMakeTooltip(RenderTooltipEvent.GatherComponents event){
-            TagTooltips.onMakeTooltip(event.getTooltipElements(), event.getItemStack(), bucket -> bucket.content, EntityType::getTags, false);
+        public static void onMakeTooltip(RenderTooltipEvent.GatherComponents event) {
+            List<Either<FormattedText, TooltipComponent>> tooltip = event.getTooltipElements();
+            TagTooltips.onMakeTooltip(
+                    event.getItemStack(),
+                    () -> TagTooltips.clearTooltip(tooltip),
+                    line -> tooltip.add(Either.left(line)),
+                    ClientGameEventHandler::getFluid,
+                    EntityType::getTags
+            );
+        }
+
+        private static Fluid getFluid(ItemStack stack) {
+            IFluidHandler fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+            if (fluidHandler != null) {
+                Fluid fluid = fluidHandler.getFluidInTank(0).getFluid();
+                return fluid.equals(Fluids.EMPTY) ? null : fluid;
+            }
+            return null;
         }
 
     }
