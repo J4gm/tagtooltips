@@ -1,14 +1,15 @@
 {
   "key.tagtooltips.show_tag_tooltip": "Показати теґи у підказці",
   "tooltip.tagtooltips.no_tags": "Немає теґів",
-  "tooltip.tagtooltips.item": "Теґи предмету:",
-  "tooltip.tagtooltips.block": "Теґи блоку:",
+  "tooltip.tagtooltips.item": "Теґи предмета:",
+  "tooltip.tagtooltips.block": "Теґи блока:",
   "tooltip.tagtooltips.entity_type": "Теґи типу сутности:",
   "tooltip.tagtooltips.enchantment": "Теґи зачарування:",
   "tooltip.tagtooltips.multiple_enchantments": "Кілька зачарувань",
   "tooltip.tagtooltips.poi_type": "Теґи точки інтересу:",
   "tooltip.tagtooltips.fluid": "Теґи рідин:",
-  "tooltip.tagtooltips.instrument": "Теґи інструменту:",
+  "tooltip.tagtooltips.instrument": "Теґи інструмента:",
   "tooltip.tagtooltips.tag": "#%s",
-  "tooltip.tagtooltips.tag_translatable": "#%s (%s)"
+  "tooltip.tagtooltips.tag_translatable": "#%s (%s)",
+  "modmenu.descriptionTranslation.": "Утримуйте (усталено) Ж, щоб переглянути теґи предметів"
 }
