@@ -6,11 +6,11 @@
 
 ### FEATURES
 
-While holding a configurable keybind (**semicolon by default**) an item's tooltip will display all of the item tags it belongs to, as well as:
+While holding a configurable keybind (**semicolon by default**) an item's tooltip will display all the item tags it belongs to, as well as:
 
 * Block tags if it's a block.
 * Entity type tags if it's a spawn egg.
-* Fluid tags if it's a bucket.
+* Fluid tags if it's a bucket or other fluid container.
 * Enchantment tags if it's an enchanted book.
 * POI type tags if it's a villager workstation, beehive, etc.
 
@@ -24,3 +24,4 @@ It will show tags from across all mods and namespaces. I hope this mod is useful
 * This mod is hosted on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/tagtooltips) and [Modrinth](https://modrinth.com/mod/tag-tooltips) only. If you find it anywhere else, it's not mine!
 * The source code and issue tracker are available [on Github](https://github.com/J4gm/tagtooltips).
 * If you want to follow me on social media, check out [my Tumblr](https://www.tumblr.com/j4gm) or [Bluesky](https://j4gm.bsky.social).
+* Thank you to StarmanMine142 for the Ukrainian translation. Get in touch if you want to help translate into another language (or submit a pull request on Github if you know how to do that).
