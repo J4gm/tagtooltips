@@ -1,9 +1,11 @@
 package jagm.tagtooltips;
 
 import com.mojang.datafixers.util.Either;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -40,12 +42,12 @@ public class ForgeEntrypoint {
 
         @SubscribeEvent
         public static void onKeyPressed(ScreenEvent.KeyPressed.Pre event) {
-            TagTooltips.onKey(event.getKeyCode(), true);
+            TagTooltips.onKey(new KeyEvent(event.getKeyCode(), event.getScanCode(), event.getModifiers()), true);
         }
 
         @SubscribeEvent
         public static void onKeyReleased(ScreenEvent.KeyReleased.Pre event) {
-            TagTooltips.onKey(event.getKeyCode(), false);
+            TagTooltips.onKey(new KeyEvent(event.getKeyCode(), event.getScanCode(), event.getModifiers()), false);
         }
 
         @SubscribeEvent
@@ -65,6 +67,8 @@ public class ForgeEntrypoint {
             if (fluidHandlerOptional.isPresent()) {
                 Fluid fluid = fluidHandlerOptional.get().getFluidInTank(0).getFluid();
                 return fluid.equals(Fluids.EMPTY) ? null : fluid;
+            } else if (stack.getItem() instanceof BucketItem bucket) {
+                return bucket.getFluid().equals(Fluids.EMPTY) ? null : bucket.getFluid();
             }
             return null;
         }
