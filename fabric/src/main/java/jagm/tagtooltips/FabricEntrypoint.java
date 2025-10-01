@@ -27,8 +27,8 @@ public class FabricEntrypoint implements ClientModInitializer {
         KeyBindingHelper.registerKeyBinding(TagTooltips.SHOW_TAG_TOOLTIP_KEY);
 
         ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            ScreenKeyboardEvents.beforeKeyPress(screen).register(((screen1, key, scancode, modifiers) -> TagTooltips.onKey(key, true)));
-            ScreenKeyboardEvents.beforeKeyRelease(screen).register(((screen1, key, scancode, modifiers) -> TagTooltips.onKey(key, false)));
+            ScreenKeyboardEvents.beforeKeyPress(screen).register((screen1, key) -> TagTooltips.onKey(key, true));
+            ScreenKeyboardEvents.beforeKeyRelease(screen).register((screen1, key) -> TagTooltips.onKey(key, false));
         });
 
         ItemTooltipCallback.EVENT.register((stack, context, tooltipFlag, tooltip) -> TagTooltips.onMakeTooltip(

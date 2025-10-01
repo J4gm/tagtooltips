@@ -16,7 +16,9 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 import java.util.List;
 
@@ -40,12 +42,12 @@ public class NeoForgeEntrypoint {
 
         @SubscribeEvent
         public static void onKeyPressed(ScreenEvent.KeyPressed.Pre event){
-            TagTooltips.onKey(event.getKeyCode(), true);
+            TagTooltips.onKey(event.getKeyEvent(), true);
         }
 
         @SubscribeEvent
         public static void onKeyReleased(ScreenEvent.KeyReleased.Pre event){
-            TagTooltips.onKey(event.getKeyCode(), false);
+            TagTooltips.onKey(event.getKeyEvent(), false);
         }
 
         @SubscribeEvent
@@ -61,9 +63,9 @@ public class NeoForgeEntrypoint {
         }
 
         private static Fluid getFluid(ItemStack stack) {
-            IFluidHandler fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+            ResourceHandler<FluidResource> fluidHandler = ItemAccess.forStack(stack).getCapability(Capabilities.Fluid.ITEM);
             if (fluidHandler != null) {
-                Fluid fluid = fluidHandler.getFluidInTank(0).getFluid();
+                Fluid fluid = fluidHandler.getResource(0).getFluid();
                 return fluid.equals(Fluids.EMPTY) ? null : fluid;
             }
             return null;

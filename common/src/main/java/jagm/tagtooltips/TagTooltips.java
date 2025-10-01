@@ -3,7 +3,7 @@ package jagm.tagtooltips;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,7 +15,6 @@ import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -32,14 +31,14 @@ import java.util.stream.Stream;
 public class TagTooltips {
 
     public static final String MOD_ID = "tagtooltips";
-    public static final KeyMapping SHOW_TAG_TOOLTIP_KEY = new KeyMapping("key." + MOD_ID + ".show_tag_tooltip", GLFW.GLFW_KEY_SEMICOLON, "key.categories.misc");
+    public static final KeyMapping SHOW_TAG_TOOLTIP_KEY = new KeyMapping("key." + MOD_ID + ".show_tag_tooltip", GLFW.GLFW_KEY_SEMICOLON, KeyMapping.Category.MISC);
 
     private static final Style TITLES = Style.EMPTY.withColor(0xFFFFA0);
     private static final Style GREYED = Style.EMPTY.withColor(0xA0A0A0).withItalic(true);
     private static final Comparator<TagKey<?>> TAG_COMPARATOR = Comparator.comparing(key -> key.location().toString());
 
-    public static void onKey(int key, boolean down) {
-        if (InputConstants.getKey(key, 0) != InputConstants.UNKNOWN && SHOW_TAG_TOOLTIP_KEY.matches(key, 0)) {
+    public static void onKey(KeyEvent key, boolean down) {
+        if (InputConstants.getKey(key) != InputConstants.UNKNOWN && SHOW_TAG_TOOLTIP_KEY.matches(key)) {
             SHOW_TAG_TOOLTIP_KEY.setDown(down);
         }
     }
@@ -105,11 +104,8 @@ public class TagTooltips {
 
             List<TagKey<EntityType<?>>> entityTags = new ArrayList<>();
             if (stack.getItem() instanceof SpawnEggItem spawnEgg) {
-                Level level = Minecraft.getInstance().level;
-                if (level != null) {
-                    entityTags.addAll(tagsFromEntityType.apply(spawnEgg.getType(level.registryAccess(), stack)).toList());
-                    entityTags.sort(TAG_COMPARATOR);
-                }
+                entityTags.addAll(tagsFromEntityType.apply(spawnEgg.getType(stack)).toList());
+                entityTags.sort(TAG_COMPARATOR);
             }
 
             List<TagKey<Enchantment>> enchantmentTags = new ArrayList<>();
