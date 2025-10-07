@@ -27,18 +27,13 @@ public class ForgeEntrypoint {
 
     public ForgeEntrypoint(FMLJavaModLoadingContext context) {}
 
-    @Mod.EventBusSubscriber(modid = TagTooltips.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class ClientModEventHandler {
+    @Mod.EventBusSubscriber(modid = TagTooltips.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class ClientGameEventHandler {
 
         @SubscribeEvent
         public static void onKeyRegister(RegisterKeyMappingsEvent event) {
             event.register(TagTooltips.SHOW_TAG_TOOLTIP_KEY);
         }
-
-    }
-
-    @Mod.EventBusSubscriber(modid = TagTooltips.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
-    public static class ClientGameEventHandler {
 
         @SubscribeEvent
         public static void onKeyPressed(ScreenEvent.KeyPressed.Pre event) {
