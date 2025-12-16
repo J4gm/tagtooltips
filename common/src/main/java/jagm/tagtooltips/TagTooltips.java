@@ -75,7 +75,7 @@ public class TagTooltips {
 
     public static void onMakeTooltip(ItemStack stack, Runnable clearTooltip, Consumer<Component> tooltip, Function<ItemStack, Fluid> getFluid, Function<EntityType<?>, Stream<TagKey<EntityType<?>>>> tagsFromEntityType) {
 
-        if (TagTooltips.SHOW_TAG_TOOLTIP_KEY.isDown()) {
+        if (TagTooltips.SHOW_TAG_TOOLTIP_KEY.isDown() && !stack.isEmpty()) {
 
             clearTooltip.run();
 
