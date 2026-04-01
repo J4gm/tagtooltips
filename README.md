@@ -2,7 +2,7 @@
 
 **Available for Fabric, NeoForge, and Forge!**
 
-![](https://i.imgur.com/z2onWx5.png)
+![](https://external-content.duckduckgo.com/iu/?u=https://i.imgur.com/z2onWx5.png)
 
 ### FEATURES
 
