@@ -4,7 +4,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
@@ -24,19 +24,19 @@ public class FabricEntrypoint implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 
-        KeyBindingHelper.registerKeyBinding(TagTooltips.SHOW_TAG_TOOLTIP_KEY);
+        KeyMappingHelper.registerKeyMapping(TagTooltips.SHOW_TAG_TOOLTIP_KEY);
 
-        ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            ScreenKeyboardEvents.beforeKeyPress(screen).register((screen1, key) -> TagTooltips.onKey(key, true));
-            ScreenKeyboardEvents.beforeKeyRelease(screen).register((screen1, key) -> TagTooltips.onKey(key, false));
+        ScreenEvents.BEFORE_INIT.register((_, screen, _, _) -> {
+            ScreenKeyboardEvents.beforeKeyPress(screen).register((_, key) -> TagTooltips.onKey(key, true));
+            ScreenKeyboardEvents.beforeKeyRelease(screen).register((_, key) -> TagTooltips.onKey(key, false));
         });
 
-        ItemTooltipCallback.EVENT.register((stack, context, tooltipFlag, tooltip) -> TagTooltips.onMakeTooltip(
+        ItemTooltipCallback.EVENT.register((stack, _, _, tooltip) -> TagTooltips.onMakeTooltip(
                 stack,
                 () -> TagTooltips.clearTooltip(tooltip),
                 tooltip::add,
                 FabricEntrypoint::getFluid,
-                entityType -> entityType.builtInRegistryHolder.tags())
+                entityType -> entityType.builtInRegistryHolder().tags())
         );
 
     }

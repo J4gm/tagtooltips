@@ -79,14 +79,14 @@ public class TagTooltips {
 
             clearTooltip.run();
 
-            List<TagKey<Item>> itemTags = new ArrayList<>(stack.getTags().toList());
+            List<TagKey<Item>> itemTags = new ArrayList<>(stack.tags().toList());
             itemTags.sort(TAG_COMPARATOR);
 
             List<TagKey<Block>> blockTags = new ArrayList<>();
             List<TagKey<PoiType>> poiTags = new ArrayList<>();
             if (stack.getItem() instanceof BlockItem blockItem) {
                 BlockState blockState = blockItem.getBlock().defaultBlockState();
-                blockTags.addAll(blockState.getTags().toList());
+                blockTags.addAll(blockState.tags().toList());
                 blockTags.sort(TAG_COMPARATOR);
                 Optional<Holder<PoiType>> poiTypeHolder = PoiTypes.forState(blockState);
                 if(poiTypeHolder.isPresent()){
@@ -98,13 +98,13 @@ public class TagTooltips {
             List<TagKey<Fluid>> fluidTags = new ArrayList<>();
             Fluid fluid = getFluid.apply(stack);
             if (fluid != null) {
-                fluidTags.addAll(fluid.defaultFluidState().getTags().toList());
+                fluidTags.addAll(fluid.defaultFluidState().tags().toList());
                 fluidTags.sort(TAG_COMPARATOR);
             }
 
             List<TagKey<EntityType<?>>> entityTags = new ArrayList<>();
-            if (stack.getItem() instanceof SpawnEggItem spawnEgg) {
-                entityTags.addAll(tagsFromEntityType.apply(spawnEgg.getType(stack)).toList());
+            if (stack.getItem() instanceof SpawnEggItem) {
+                entityTags.addAll(tagsFromEntityType.apply(SpawnEggItem.getType(stack)).toList());
                 entityTags.sort(TAG_COMPARATOR);
             }
 
