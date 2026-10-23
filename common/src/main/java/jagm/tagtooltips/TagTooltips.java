@@ -18,7 +18,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import org.lwjgl.glfw.GLFW;
+
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 public class TagTooltips {
 
     public static final String MOD_ID = "tagtooltips";
-    public static final KeyMapping SHOW_TAG_TOOLTIP_KEY = new KeyMapping("key." + MOD_ID + ".show_tag_tooltip", GLFW.GLFW_KEY_SEMICOLON, KeyMapping.Category.MISC);
+    public static final KeyMapping SHOW_TAG_TOOLTIP_KEY = new KeyMapping("key." + MOD_ID + ".show_tag_tooltip", InputConstants.KEY_SEMICOLON, KeyMapping.Category.MISC);
 
     private static final Style TITLES = Style.EMPTY.withColor(0xFFFFA0);
     private static final Style GREYED = Style.EMPTY.withColor(0xA0A0A0).withItalic(true);
